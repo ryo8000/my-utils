@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build",
+    "prepare": "npm run build",
     "test": "echo \"No test specified\" && exit 0"
   },
   "keywords": [
