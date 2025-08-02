@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "vitest"
   },
   "keywords": [
     "utils"
@@ -19,6 +19,7 @@
   "license": "MIT",
   "description": "A collection of utility functions.",
   "devDependencies": {
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   }
 }
