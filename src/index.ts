@@ -1,3 +1,1 @@
-export const getHello = (): string => {
-  return "Hello, world!";
-}
+export * from './number.js';
