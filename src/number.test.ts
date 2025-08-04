@@ -3,7 +3,6 @@ import { toSafeInteger } from './number.js';
 
 describe('toSafeInteger', () => {
   it.each([
-    ['0', 0],
     ['123', 123],
     ['007', 7],
     ['999999999999999', 999999999999999],
@@ -13,13 +12,20 @@ describe('toSafeInteger', () => {
   });
 
   it.each([
-    ['-0', -0],
     ['-123', -123],
     ['-007', -7],
     ['-999999999999999', -999999999999999],
     [Number.MIN_SAFE_INTEGER.toString(), -9007199254740991],
   ])('should convert valid negative safe integer string "%s" to number %d', (input, expected) => {
     expect(toSafeInteger(input)).toBe(expected);
+  });
+
+  it('should convert "0" to 0', () => {
+    expect(toSafeInteger('0')).toBe(0);
+  });
+
+  it('should convert "-0" to -0', () => {
+    expect(toSafeInteger('-0')).toBe(-0);
   });
 
   it.each([(Number.MAX_SAFE_INTEGER + 1).toString(), (Number.MIN_SAFE_INTEGER - 1).toString()])(
