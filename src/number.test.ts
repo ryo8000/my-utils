@@ -1,62 +1,135 @@
 import { describe, it, expect } from 'vitest';
-import { toInteger } from './number.js';
+import { toInteger, toSafeInteger } from './number.js';
 
 describe('toInteger', () => {
-  it('should convert valid positive integer strings to numbers', () => {
-    expect(toInteger('0')).toBe(0);
-    expect(toInteger('123')).toBe(123);
-    expect(toInteger('007')).toBe(7);
-    expect(toInteger('999999999')).toBe(999999999);
-    expect(toInteger('9007199254740991')).toBe(9007199254740991);
+  it.each([
+    ['0', 0],
+    ['123', 123],
+    ['007', 7],
+    ['999999999999999', 999999999999999],
+    [Number.MAX_SAFE_INTEGER.toString(), 9007199254740991],
+    [(Number.MAX_SAFE_INTEGER + 1).toString(), 9007199254740992],
+  ])('should convert valid positive integer string "%s" to number %d', (input, expected) => {
+    expect(toInteger(input)).toBe(expected);
   });
 
-  it('should convert valid negative integer strings to numbers', () => {
-    expect(toInteger('-1')).toBe(-1);
-    expect(toInteger('-123')).toBe(-123);
-    expect(toInteger('-0')).toBe(-0);
-    expect(toInteger('-999999999')).toBe(-999999999);
+  it.each([
+    ['-0', -0],
+    ['-123', -123],
+    ['-007', -7],
+    ['-999999999999999', -999999999999999],
+    [Number.MIN_SAFE_INTEGER.toString(), -9007199254740991],
+    [(Number.MIN_SAFE_INTEGER - 1).toString(), -9007199254740992],
+  ])('should convert valid negative integer string "%s" to number %d', (input, expected) => {
+    expect(toInteger(input)).toBe(expected);
   });
 
   it('should return undefined for empty string', () => {
     expect(toInteger('')).toBeUndefined();
   });
 
-  it('should return undefined for scientific notation', () => {
-    expect(toInteger('2e1')).toBeUndefined();
-    expect(toInteger('1e10')).toBeUndefined();
-    expect(toInteger('1E5')).toBeUndefined();
+  it.each(['2e1', '1e10', '1E5'])('should return undefined for scientific notation "%s"', input => {
+    expect(toInteger(input)).toBeUndefined();
   });
 
-  it('should return undefined for decimal numbers', () => {
-    expect(toInteger('123.45')).toBeUndefined();
-    expect(toInteger('0.0')).toBeUndefined();
-    expect(toInteger('12.0')).toBeUndefined();
-    expect(toInteger('-123.45')).toBeUndefined();
+  it.each(['123.45', '0.0', '12.0', '-123.45'])(
+    'should return undefined for decimal numbers "%s"',
+    input => {
+      expect(toInteger(input)).toBeUndefined();
+    }
+  );
+
+  it.each(['+123', '+0'])('should return undefined for strings with plus sign "%s"', input => {
+    expect(toInteger(input)).toBeUndefined();
   });
 
-  it('should return undefined for strings with plus sign', () => {
-    expect(toInteger('+123')).toBeUndefined();
-    expect(toInteger('+0')).toBeUndefined();
+  it.each(['123abc', 'abc123', '12a34', 'abc'])(
+    'should return undefined for strings containing letters "%s"',
+    input => {
+      expect(toInteger(input)).toBeUndefined();
+    }
+  );
+
+  it.each([' 123', '123 ', ' 123 ', '1 23'])(
+    'should return undefined for strings with whitespace "%s"',
+    input => {
+      expect(toInteger(input)).toBeUndefined();
+    }
+  );
+
+  it.each(['1,000', '1_000', '$123', '123%'])(
+    'should return undefined for strings with special characters "%s"',
+    input => {
+      expect(toSafeInteger(input)).toBeUndefined();
+    }
+  );
+});
+
+describe('toSafeInteger', () => {
+  it.each([
+    ['0', 0],
+    ['123', 123],
+    ['007', 7],
+    ['999999999999999', 999999999999999],
+    [Number.MAX_SAFE_INTEGER.toString(), 9007199254740991],
+  ])('should convert valid safe integer string "%s" to number %d', (input, expected) => {
+    expect(toSafeInteger(input)).toBe(expected);
   });
 
-  it('should return undefined for strings containing letters', () => {
-    expect(toInteger('123abc')).toBeUndefined();
-    expect(toInteger('abc123')).toBeUndefined();
-    expect(toInteger('12a34')).toBeUndefined();
-    expect(toInteger('abc')).toBeUndefined();
+  it.each([
+    ['-0', -0],
+    ['-123', -123],
+    ['-007', -7],
+    ['-999999999999999', -999999999999999],
+    [Number.MIN_SAFE_INTEGER.toString(), -9007199254740991],
+  ])('should convert valid negative safe integer string "%s" to number %d', (input, expected) => {
+    expect(toSafeInteger(input)).toBe(expected);
   });
 
-  it('should return undefined for strings with whitespace', () => {
-    expect(toInteger(' 123')).toBeUndefined();
-    expect(toInteger('123 ')).toBeUndefined();
-    expect(toInteger(' 123 ')).toBeUndefined();
-    expect(toInteger('1 23')).toBeUndefined();
+  it.each([(Number.MAX_SAFE_INTEGER + 1).toString(), (Number.MIN_SAFE_INTEGER - 1).toString()])(
+    'should return undefined for integer outside safe integer range "%s"',
+    input => {
+      expect(toSafeInteger(input)).toBeUndefined();
+    }
+  );
+
+  it('should return undefined for empty string', () => {
+    expect(toSafeInteger('')).toBeUndefined();
   });
 
-  it('should return undefined for strings with special characters', () => {
-    expect(toInteger('1,000')).toBeUndefined();
-    expect(toInteger('1_000')).toBeUndefined();
-    expect(toInteger('$123')).toBeUndefined();
-    expect(toInteger('123%')).toBeUndefined();
+  it.each(['2e1', '1e10', '1E5'])('should return undefined for scientific notation "%s"', input => {
+    expect(toSafeInteger(input)).toBeUndefined();
   });
+
+  it.each(['123.45', '0.0', '12.0', '-123.45'])(
+    'should return undefined for decimal numbers "%s"',
+    input => {
+      expect(toSafeInteger(input)).toBeUndefined();
+    }
+  );
+
+  it.each(['+123', '+0'])('should return undefined for strings with plus sign "%s"', input => {
+    expect(toSafeInteger(input)).toBeUndefined();
+  });
+
+  it.each(['123abc', 'abc123', '12a34', 'abc'])(
+    'should return undefined for strings containing letters "%s"',
+    input => {
+      expect(toSafeInteger(input)).toBeUndefined();
+    }
+  );
+
+  it.each([' 123', '123 ', ' 123 ', '1 23'])(
+    'should return undefined for strings with whitespace "%s"',
+    input => {
+      expect(toSafeInteger(input)).toBeUndefined();
+    }
+  );
+
+  it.each(['1,000', '1_000', '$123', '123%'])(
+    'should return undefined for strings with special characters "%s"',
+    input => {
+      expect(toSafeInteger(input)).toBeUndefined();
+    }
+  );
 });
