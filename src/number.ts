@@ -14,6 +14,7 @@ export function toSafeInteger(str: string): number | undefined {
 
 /**
  * Clamps a number within the specified range, ensuring it falls between min and max values.
+ * If min > max, the values are automatically swapped to create a valid range.
  *
  * @param num - The number to clamp
  * @param min - The minimum allowed value
@@ -21,5 +22,8 @@ export function toSafeInteger(str: string): number | undefined {
  * @returns The clamped number, guaranteed to be between min and max (inclusive)
  */
 export function clamp(num: number, min: number, max: number): number {
+  if (min > max) {
+    [min, max] = [max, min];
+  }
   return Math.min(Math.max(num, min), max);
 }

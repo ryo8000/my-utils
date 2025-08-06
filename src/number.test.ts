@@ -138,4 +138,24 @@ describe('clamp', () => {
       expect(clamp(num, min, max)).toBe(expected);
     }
   );
+
+  it.each([
+    [5, 10, 0, 5], // value within swapped range
+    [15, 10, 0, 10], // value above swapped max (original min)
+    [-5, 10, 0, 0], // value below swapped min (original max)
+    [0, 10, 0, 0], // value equals swapped min (original max)
+    [10, 10, 0, 10], // value equals swapped max (original min)
+    [7, 5, 10, 7], // normal case after swap (5 < 10)
+    [-2, 5, -10, -2], // negative numbers with swap
+    [8, 5, -10, 5], // value above range after swap
+    [-12, 5, -10, -10], // value below range after swap
+    [3.5, 8.2, 1.1, 3.5], // decimal numbers with swap
+    [0.5, 8.2, 1.1, 1.1], // decimal below range after swap
+    [9.0, 8.2, 1.1, 8.2], // decimal above range after swap
+  ])(
+    'should swap min/max when min > max: clamp %d with range [%d, %d] to %d',
+    (num, min, max, expected) => {
+      expect(clamp(num, min, max)).toBe(expected);
+    }
+  );
 });
