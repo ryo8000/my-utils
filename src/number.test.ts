@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toSafeInteger } from './number.js';
+import { toSafeInteger, clamp } from './number.js';
 
 describe('toSafeInteger', () => {
   it.each([
@@ -72,6 +72,90 @@ describe('toSafeInteger', () => {
     'should return undefined for strings with special characters "%s"',
     input => {
       expect(toSafeInteger(input)).toBeUndefined();
+    }
+  );
+});
+
+describe('clamp', () => {
+  it.each([
+    [5, 0, 10, 5], // value within range
+    [15, 0, 10, 10], // value above max
+    [-5, 0, 10, 0], // value below min
+    [0, 0, 10, 0], // value equals min
+    [10, 0, 10, 10], // value equals max
+    [5, 5, 5, 5], // min equals max
+  ])('should clamp %d with range [%d, %d] to %d', (num, min, max, expected) => {
+    expect(clamp(num, min, max)).toBe(expected);
+  });
+
+  it.each([
+    [-10, -20, -5, -10], // value within range
+    [-3, -20, -5, -5], // value above max
+    [-25, -20, -5, -20], // value below min
+    [-10, -10, -5, -10], // value equals min
+    [-5, -10, -5, -5], // value equals max
+    [-5, -5, -5, -5], // min equals max
+  ])(
+    'should handle negative numbers: clamp %d with range [%d, %d] to %d',
+    (num, min, max, expected) => {
+      expect(clamp(num, min, max)).toBe(expected);
+    }
+  );
+
+  it.each([
+    [5.7, 0, 10, 5.7], // decimal within range
+    [12.3, 0, 10, 10], // decimal above max
+    [-2.8, 0, 10, 0], // decimal below min
+    [7.5, 7.5, 8.5, 7.5], // decimal equals min
+    [8.5, 7.5, 8.5, 8.5], // decimal equals max
+    [8.5, 8.5, 8.5, 8.5], // min equals max
+  ])(
+    'should handle decimal numbers: clamp %d with range [%d, %d] to %d',
+    (num, min, max, expected) => {
+      expect(clamp(num, min, max)).toBe(expected);
+    }
+  );
+
+  it.each([
+    [1000000, -100, 100, 100], // very large number
+    [-1000000, -100, 100, -100], // very small number
+    [Number.MAX_SAFE_INTEGER, -100, 100, 100], // maximum value
+    [Number.MIN_SAFE_INTEGER, -100, 100, -100], // minimum value
+  ])(
+    'should handle extreme values: clamp %d with range [%d, %d] to %d',
+    (num, min, max, expected) => {
+      expect(clamp(num, min, max)).toBe(expected);
+    }
+  );
+
+  it.each([
+    [0, -5, 5, 0],
+    [0, 1, 5, 1],
+    [0, -5, -1, -1],
+  ])(
+    'should handle zero correctly: clamp %d with range [%d, %d] to %d',
+    (num, min, max, expected) => {
+      expect(clamp(num, min, max)).toBe(expected);
+    }
+  );
+
+  it.each([
+    [5, 10, 0, 5], // value within swapped range
+    [15, 10, 0, 10], // value above swapped max (original min)
+    [-5, 10, 0, 0], // value below swapped min (original max)
+    [0, 10, 0, 0], // value equals swapped min (original max)
+    [10, 10, 0, 10], // value equals swapped max (original min)
+    [7, 5, 10, 7], // normal case after swap (5 < 10)
+    [-2, 5, -10, -2], // negative numbers with swap
+    [8, 5, -10, 5], // value above range after swap
+    [-12, 5, -10, -10], // value below range after swap
+    [3.5, 8.2, 1.1, 3.5], // decimal numbers with swap
+    [0.5, 8.2, 1.1, 1.1], // decimal below range after swap
+    [9.0, 8.2, 1.1, 8.2], // decimal above range after swap
+  ])(
+    'should swap min/max when min > max: clamp %d with range [%d, %d] to %d',
+    (num, min, max, expected) => {
+      expect(clamp(num, min, max)).toBe(expected);
     }
   );
 });
