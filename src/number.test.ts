@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toSafeInteger, clamp } from './number.js';
+import { toSafeInteger, clamp, sum } from './number.js';
 
 describe('toSafeInteger', () => {
   it.each([
@@ -158,4 +158,58 @@ describe('clamp', () => {
       expect(clamp(num, min, max)).toBe(expected);
     }
   );
+});
+
+describe('sum', () => {
+  it('should return 0 for empty array', () => {
+    expect(sum([])).toBe(0);
+  });
+
+  it.each([
+    [[5], 5],
+    [[0], 0],
+    [[-3], -3],
+    [[1.5], 1.5],
+  ])('should return the single value for single element array %j', (input, expected) => {
+    expect(sum(input)).toBe(expected);
+  });
+
+  it.each([
+    [[1, 2, 3], 6],
+    [[-1, -2, -3], -6],
+    [[1, -1], 0],
+    [[10, -5, -3, 2], 4],
+    [[-10, 5, 3, -2], -4],
+    [[100, -50, 25, -25], 50],
+    [[5, -10, 15, -20, 10], 0],
+  ])('should sum numbers %j to %d', (input, expected) => {
+    expect(sum(input)).toBe(expected);
+  });
+
+  it.each([
+    [[1.5, 2.5, 3.5], 7.5],
+    [[0.1, 0.2, 0.3], 0.6],
+    [[-1.5, -2.5, -3.5], -7.5],
+    [[1.25, -0.75, 2.5], 3],
+  ])('should sum decimal numbers %j to %d', (input, expected) => {
+    expect(sum(input)).toBeCloseTo(expected);
+  });
+
+  it.each([
+    [[0, 0, 0], 0],
+    [[1, 0, 2], 3],
+    [[0, -1, 0, 1], 0],
+    [[-5, 0, 5], 0],
+  ])('should handle arrays with zero values %j to %d', (input, expected) => {
+    expect(sum(input)).toBe(expected);
+  });
+
+  it.each([
+    [[1000000, 2000000], 3000000],
+    [[Number.MAX_SAFE_INTEGER, -Number.MAX_SAFE_INTEGER], 0],
+    [[Number.MAX_SAFE_INTEGER], Number.MAX_SAFE_INTEGER],
+    [[Number.MIN_SAFE_INTEGER], Number.MIN_SAFE_INTEGER],
+  ])('should handle large numbers %j to %d', (input, expected) => {
+    expect(sum(input)).toBe(expected);
+  });
 });
