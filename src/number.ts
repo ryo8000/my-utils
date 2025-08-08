@@ -27,3 +27,15 @@ export function clamp(num: number, min: number, max: number): number {
   }
   return Math.min(Math.max(num, min), max);
 }
+
+/**
+ * Calculates the sum of all elements in a number array.
+ *
+ * @param nums - The array of numbers to sum
+ * @returns The sum of all numbers in the array, or 0 if the array is empty
+ */
+export function sum(nums: number[]): number {
+  let s = 0;
+  for (let i = 0, l = nums.length; i < l; i++) s += nums[i]!;
+  return s;
+}
