@@ -13,21 +13,21 @@ describe('toSafeInteger', () => {
     expect(toSafeInteger(input)).toBe(expected);
   });
 
-  it.each([
-    (Number.MAX_SAFE_INTEGER + 1).toString(),
-    (Number.MIN_SAFE_INTEGER - 1).toString(),
-  ])('should return undefined for out-of-range integer "%s"', input => {
-    expect(toSafeInteger(input)).toBeUndefined();
-  });
+  it.each([(Number.MAX_SAFE_INTEGER + 1).toString(), (Number.MIN_SAFE_INTEGER - 1).toString()])(
+    'should return undefined for out-of-range integer "%s"',
+    input => {
+      expect(toSafeInteger(input)).toBeUndefined();
+    }
+  );
 
   it.each([
-    '',                // Empty string
-    '2e1',             // Scientific notation
-    '123.45',          // Decimal number
-    '+123',            // Leading plus sign
-    '123abc',          // Alphanumeric mix
-    ' 123',            // Contains whitespace
-    '1_000',           // Contains special characters
+    '', // Empty string
+    '2e1', // Scientific notation
+    '123.45', // Decimal number
+    '+123', // Leading plus sign
+    '123abc', // Alphanumeric mix
+    '123 ', // Contains whitespace
+    '1_000', // Contains special characters
   ])('should return undefined for invalid input "%s"', input => {
     expect(toSafeInteger(input)).toBeUndefined();
   });
@@ -80,6 +80,8 @@ describe('sum', () => {
   it.each([
     [[0.1], 0.1],
     [[1.25, -0.75, 2.5], 3],
+    [[0.1, 0.2, 0.3], 0.6],
+    [[-1.5, -2.5, -3.5], -7.5],
   ])('sums decimals %j ≈ %d', (input, expected) => {
     expect(sum(input)).toBeCloseTo(expected);
   });
