@@ -5,21 +5,19 @@ import globals from 'globals';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   {
-    files: ['src/**/*.ts'],
+    files: ['**/*.ts'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
         ...globals.es2024,
         ...globals.node,
-        ...globals.browser,
       },
       parserOptions: {
-        project: ['./tsconfig.json'],
+        projectService: true,
       },
     },
     linterOptions: {
@@ -35,11 +33,11 @@ export default tseslint.config(
         'error',
         { checksVoidReturn: { attributes: false } },
       ],
-      'no-console': 'error',
+      'no-console': 'warn',
     },
   },
   {
-    files: ['src/**/*.test.ts'],
+    files: ['**/*.test.ts'],
     languageOptions: {
       globals: {
         ...globals.node,
@@ -50,5 +48,5 @@ export default tseslint.config(
       'no-console': 'off',
     },
   },
-  prettier
+  prettier,
 );
