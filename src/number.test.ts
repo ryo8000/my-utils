@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { toSafeInteger, clamp, sum } from './number.js';
+import { describe, expect, it } from 'vitest';
+
+import { clamp, sum, toSafeInteger } from './number.js';
 
 describe('toSafeInteger', () => {
   it.each([
@@ -15,9 +16,9 @@ describe('toSafeInteger', () => {
 
   it.each([(Number.MAX_SAFE_INTEGER + 1).toString(), (Number.MIN_SAFE_INTEGER - 1).toString()])(
     'should return undefined for out-of-range integer "%s"',
-    input => {
+    (input) => {
       expect(toSafeInteger(input)).toBeUndefined();
-    }
+    },
   );
 
   it.each([
@@ -28,7 +29,7 @@ describe('toSafeInteger', () => {
     '123abc', // Alphanumeric mix
     '123 ', // Contains whitespace
     '1_000', // Contains special characters
-  ])('should return undefined for invalid input "%s"', input => {
+  ])('should return undefined for invalid input "%s"', (input) => {
     expect(toSafeInteger(input)).toBeUndefined();
   });
 });
