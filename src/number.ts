@@ -31,7 +31,7 @@ export function clamp(num: number, min: number, max: number): number {
 /**
  * Calculates the sum of all elements in a number array.
  *
- * - Skips holes in sparse arrays (treats them as 0)
+ * - Skips holes (empty slots) in sparse arrays
  * - Infinity is handled according to JavaScript arithmetic rules
  *
  * @param nums - The array of numbers to sum
@@ -46,7 +46,7 @@ export function sum(nums: readonly number[], options?: { ignoreNaN?: boolean }):
   for (let i = 0, l = nums.length; i < l; i++) {
     const n = nums[i];
     if (n === undefined) continue;
-    else if (Number.isNaN(n)) {
+    if (Number.isNaN(n)) {
       if (ignoreNaN) continue;
       return NaN;
     }
