@@ -93,4 +93,33 @@ describe('sum', () => {
   ])('handles large numbers %j => %d', (input, expected) => {
     expect(sum(input)).toBe(expected);
   });
+
+  it('should skip holes (undefined elements) in sparse array', () => {
+    const arr = [] as number[];
+    arr[0] = 1;
+    arr[2] = 3; // arr[1] is a hole
+    expect(sum(arr)).toBe(4);
+  });
+
+  it('should handle Infinity according to JS rules', () => {
+    expect(sum([Infinity, 1])).toBe(Infinity);
+    expect(Number.isNaN(sum([Infinity, -Infinity]))).toBe(true);
+  });
+
+  describe('NaN handling', () => {
+    it('should skip NaN by default', () => {
+      expect(sum([1, NaN, 2])).toBe(3);
+    });
+
+    it('should propagate NaN when ignoreNaN is false', () => {
+      expect(Number.isNaN(sum([1, NaN, 2], { ignoreNaN: false }))).toBe(true);
+    });
+  });
+
+  it('does not mutate the input array', () => {
+    const input = [1, 2, 3] as const;
+    const copy = [...input];
+    sum(input);
+    expect(input).toEqual(copy);
+  });
 });
