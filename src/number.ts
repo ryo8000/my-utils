@@ -31,11 +31,26 @@ export function clamp(num: number, min: number, max: number): number {
 /**
  * Calculates the sum of all elements in a number array.
  *
+ * - Skips holes in sparse arrays (treats them as 0)
+ * - Infinity is handled according to JavaScript arithmetic rules
+ *
  * @param nums - The array of numbers to sum
- * @returns The sum of all numbers in the array, or 0 if the array is empty
+ * @param options - Optional configuration object
+ * @param options.ignoreNaN - If true (default), NaN values are skipped; if false, returns NaN when any NaN is encountered
+ * @returns The sum of all numbers in the array, or 0 if the array is empty. Returns NaN if ignoreNaN is false and any NaN values are present.
  */
-export function sum(nums: number[]): number {
+export function sum(nums: readonly number[], options?: { ignoreNaN?: boolean }): number {
+  const ignoreNaN = options?.ignoreNaN ?? true;
+
   let s = 0;
-  for (let i = 0, l = nums.length; i < l; i++) s += nums[i]!;
+  for (let i = 0, l = nums.length; i < l; i++) {
+    const n = nums[i];
+    if (n === undefined) continue;
+    else if (Number.isNaN(n)) {
+      if (ignoreNaN) continue;
+      return NaN;
+    }
+    s += n;
+  }
   return s;
 }
