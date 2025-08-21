@@ -31,21 +31,31 @@ export function clamp(num: number, min: number, max: number): number {
 /**
  * Calculates the sum of all elements in a number array.
  *
- * - Skips holes (empty slots) in sparse arrays
+ * - Can skip holes (empty slots) in sparse arrays and/or explicit `undefined` values if `ignoreUndefined` is true (default)
  * - Infinity is handled according to JavaScript arithmetic rules
  *
  * @param nums - The array of numbers to sum
  * @param options - Optional configuration object
+ * @param options.ignoreUndefined - If true (default), undefined values are skipped; if false, undefined values are treated as NaN
  * @param options.ignoreNaN - If true (default), NaN values are skipped; if false, returns NaN when any NaN is encountered
- * @returns The sum of all numbers in the array, or 0 if the array is empty. Returns NaN if ignoreNaN is false and any NaN values are present.
+ * @returns The sum of all numbers in the array, or 0 if the array is empty.
+ *          Returns NaN if:
+ *            - ignoreUndefined is false and any undefined values are present, or
+ *            - ignoreNaN is false and any NaN values are present
  */
-export function sum(nums: readonly number[], options?: { ignoreNaN?: boolean }): number {
-  const ignoreNaN = options?.ignoreNaN ?? true;
+export function sum(
+  nums: readonly number[],
+  options?: { ignoreNaN?: boolean; ignoreUndefined?: boolean },
+): number {
+  const { ignoreNaN = true, ignoreUndefined = true } = options ?? {};
 
   let s = 0;
   for (let i = 0, l = nums.length; i < l; i++) {
     const n = nums[i];
-    if (n === undefined) continue;
+    if (n === undefined) {
+      if (ignoreUndefined) continue;
+      return NaN;
+    }
     if (Number.isNaN(n)) {
       if (ignoreNaN) continue;
       return NaN;
