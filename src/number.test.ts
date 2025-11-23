@@ -9,7 +9,6 @@ describe('toSafeInteger', () => {
     [Number.MAX_SAFE_INTEGER.toString(), Number.MAX_SAFE_INTEGER],
     [Number.MIN_SAFE_INTEGER.toString(), Number.MIN_SAFE_INTEGER],
     ['0', 0],
-    ['-0', -0],
   ])('should convert "%s" to %d', (input, expected) => {
     expect(toSafeInteger(input)).toBe(expected);
   });
@@ -31,6 +30,16 @@ describe('toSafeInteger', () => {
     '1_000', // Contains special characters
   ])('should return undefined for invalid input "%s"', (input) => {
     expect(toSafeInteger(input)).toBeUndefined();
+  });
+
+  describe('-0 handling', () => {
+    it('should return 0 for "-0" by default', () => {
+      expect(toSafeInteger('-0')).toBe(0);
+    });
+
+    it('should return -0 when normalizeNegativeZero is false', () => {
+      expect(Object.is(toSafeInteger('-0', { normalizeNegativeZero: false }), -0)).toBe(true);
+    });
   });
 });
 
