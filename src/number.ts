@@ -2,14 +2,26 @@
  * Converts a string to a safe integer if it represents a valid integer within the safe integer range.
  *
  * @param str - The string to convert to a safe integer
+ * @param options - Configuration options
+ * @param options.normalizeNegativeZero - If true (default), "-0" will be treated as 0
  * @returns The parsed safe integer if the string is valid and within safe range, undefined otherwise
  */
-export function toSafeInteger(str: string): number | undefined {
+export function toSafeInteger(
+  str: string,
+  options?: { normalizeNegativeZero?: boolean },
+): number | undefined {
+  const normalizeNegativeZero = options?.normalizeNegativeZero ?? true;
+
   if (!/^-?[0-9]+$/.test(str)) {
     return undefined;
   }
+
   const n = Number(str);
-  return Number.isSafeInteger(n) ? n : undefined;
+  if (!Number.isSafeInteger(n)) {
+    return undefined;
+  }
+
+  return normalizeNegativeZero && n === 0 ? 0 : n;
 }
 
 /**
