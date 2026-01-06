@@ -41,6 +41,17 @@ export default tseslint.config(
         'error',
         { checksVoidReturn: { attributes: false } },
       ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
       'no-console': 'warn',
       'simple-import-sort/imports': 'warn',
       'simple-import-sort/exports': 'warn',
