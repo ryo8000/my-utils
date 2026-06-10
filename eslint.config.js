@@ -20,32 +20,19 @@ export default tseslint.config(
       },
     },
     linterOptions: {
-      reportUnusedDisableDirectives: true,
+      reportUnusedDisableDirectives: 'error',
     },
     plugins: {
       'simple-import-sort': simpleImportSort,
     },
     rules: {
-      '@typescript-eslint/consistent-type-definitions': [
-        'warn',
-        'interface'
-      ],
       '@typescript-eslint/consistent-type-imports': [
-        'warn',
+        'error',
         {
-          prefer: 'type-imports',
-          fixStyle: 'separate-type-imports'
+          fixStyle: 'inline-type-imports',
         },
       ],
       '@typescript-eslint/explicit-module-boundary-types': 'error',
-      '@typescript-eslint/no-misused-promises': [
-        'error',
-        {
-          checksVoidReturn: {
-            attributes: false
-          }
-        },
-      ],
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -62,8 +49,8 @@ export default tseslint.config(
       '@typescript-eslint/require-array-sort-compare': [
         'error',
         {
-          ignoreStringArrays: true
-        }
+          ignoreStringArrays: true,
+        },
       ],
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       curly: 'error',
