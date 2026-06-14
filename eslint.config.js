@@ -26,6 +26,12 @@ export default tseslint.config(
       'simple-import-sort': simpleImportSort,
     },
     rules: {
+      '@typescript-eslint/consistent-type-exports': [
+        'error',
+        {
+          fixMixedExportsWithInlineTypeSpecifier: true,
+        },
+      ],
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {
@@ -33,6 +39,47 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/explicit-module-boundary-types': 'error',
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'default',
+          format: ['camelCase'],
+        },
+        {
+          selector: 'typeLike',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'enumMember',
+          format: ['PascalCase', 'UPPER_CASE'],
+        },
+        {
+          selector: 'import',
+          format: ['camelCase', 'PascalCase'],
+        },
+        {
+          selector: ['variable', 'parameter'],
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+        },
+        {
+          selector: 'variable',
+          modifiers: ['const', 'global'],
+          format: ['camelCase', 'UPPER_CASE'],
+        },
+        {
+          selector: [
+            'enumMember',
+            'objectLiteralMethod',
+            'objectLiteralProperty',
+            'typeMethod',
+            'typeProperty',
+          ],
+          modifiers: ['requiresQuotes'],
+          format: null,
+        },
+      ],
+      '@typescript-eslint/no-loop-func': 'error',
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -45,6 +92,7 @@ export default tseslint.config(
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/no-use-before-define': 'error',
       '@typescript-eslint/promise-function-async': 'error',
       '@typescript-eslint/require-array-sort-compare': [
         'error',
@@ -57,8 +105,8 @@ export default tseslint.config(
       eqeqeq: 'error',
       'no-console': 'warn',
       'no-shadow': 'off',
-      'simple-import-sort/imports': 'warn',
-      'simple-import-sort/exports': 'warn',
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
   {
