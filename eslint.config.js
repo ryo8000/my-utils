@@ -26,6 +26,7 @@ export default tseslint.config(
       'simple-import-sort': simpleImportSort,
     },
     rules: {
+      '@typescript-eslint/class-methods-use-this': 'error',
       '@typescript-eslint/consistent-type-exports': [
         'error',
         {
@@ -39,6 +40,12 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/explicit-module-boundary-types': 'error',
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        {
+          accessibility: 'no-public',
+        },
+      ],
       '@typescript-eslint/naming-convention': [
         'error',
         {
@@ -81,6 +88,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-loop-func': 'error',
       '@typescript-eslint/no-shadow': 'error',
+      '@typescript-eslint/no-unused-private-class-members': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -93,6 +101,8 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/no-use-before-define': 'error',
+      '@typescript-eslint/parameter-properties': 'error',
+      '@typescript-eslint/prefer-enum-initializers': 'error',
       '@typescript-eslint/promise-function-async': 'error',
       '@typescript-eslint/require-array-sort-compare': [
         'error',
