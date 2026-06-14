@@ -68,11 +68,15 @@ export function sum(
   for (let i = 0, l = nums.length; i < l; i++) {
     const n = nums[i];
     if (n === undefined) {
-      if (ignoreUndefined) continue;
+      if (ignoreUndefined) {
+        continue;
+      }
       return NaN;
     }
     if (Number.isNaN(n)) {
-      if (ignoreNaN) continue;
+      if (ignoreNaN) {
+        continue;
+      }
       return NaN;
     }
     s += n;
