@@ -46,6 +46,7 @@ export default tseslint.config(
           accessibility: 'no-public',
         },
       ],
+      '@typescript-eslint/member-ordering': 'error',
       '@typescript-eslint/naming-convention': [
         'error',
         {
