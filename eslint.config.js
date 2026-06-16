@@ -47,6 +47,7 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/member-ordering': 'error',
+      '@typescript-eslint/method-signature-style': ['error', 'property'],
       '@typescript-eslint/naming-convention': [
         'error',
         {
@@ -104,6 +105,7 @@ export default tseslint.config(
       '@typescript-eslint/no-use-before-define': 'error',
       '@typescript-eslint/parameter-properties': 'error',
       '@typescript-eslint/prefer-enum-initializers': 'error',
+      '@typescript-eslint/prefer-readonly': 'error',
       '@typescript-eslint/promise-function-async': 'error',
       '@typescript-eslint/require-array-sort-compare': [
         'error',
@@ -111,11 +113,110 @@ export default tseslint.config(
           ignoreStringArrays: true,
         },
       ],
-      '@typescript-eslint/switch-exhaustiveness-check': 'error',
-      curly: 'error',
-      eqeqeq: 'error',
+      '@typescript-eslint/strict-void-return': [
+        'error',
+        {
+          allowReturnAny: false,
+        },
+      ],
+      '@typescript-eslint/switch-exhaustiveness-check': [
+        'error',
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          considerDefaultExhaustiveForUnions: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      'array-callback-return': [
+        'error',
+        {
+          checkForEach: true,
+        },
+      ],
+      'default-case-last': 'error',
+      eqeqeq: [
+        'error',
+        'always',
+        {
+          null: 'ignore',
+        },
+      ],
+      'no-alert': 'error',
+      'no-await-in-loop': 'error',
+      'no-caller': 'error',
+      'no-cond-assign': ['error', 'always'],
       'no-console': 'warn',
+      'no-constructor-return': 'error',
+      'no-duplicate-imports': [
+        'error',
+        {
+          allowSeparateTypeImports: true,
+        },
+      ],
+      'no-eval': 'error',
+      'no-extend-native': 'error',
+      'no-extra-bind': 'error',
+      'no-implicit-coercion': 'error',
+      'no-labels': [
+        'error',
+        {
+          allowLoop: false,
+          allowSwitch: false,
+        },
+      ],
+      'no-lone-blocks': 'error',
+      'no-multi-str': 'error',
+      'no-new': 'error',
+      'no-new-func': 'error',
+      'no-new-wrappers': 'error',
+      'no-octal-escape': 'error',
+      'no-promise-executor-return': 'error',
+      'no-proto': 'error',
+      'no-return-assign': ['error', 'always'],
+      'no-self-compare': 'error',
+      'no-sequences': 'error',
       'no-shadow': 'off',
+      'no-template-curly-in-string': 'error',
+      'no-unassigned-vars': 'error',
+      'no-undef-init': 'error',
+      'no-unmodified-loop-condition': 'error',
+      'no-useless-assignment': 'error',
+      'no-useless-call': 'error',
+      'no-useless-computed-key': 'error',
+      'no-useless-concat': 'error',
+      'no-useless-rename': 'error',
+      'no-useless-return': 'error',
+      'no-with': 'error',
+      'object-shorthand': ['error', 'always'],
+      'prefer-const': [
+        'error',
+        {
+          destructuring: 'all',
+        },
+      ],
+      'prefer-object-has-own': 'error',
+      'prefer-object-spread': 'error',
+      'prefer-regex-literals': [
+        'error',
+        {
+          disallowRedundantWrapping: true,
+        },
+      ],
+      radix: 'error',
+      'symbol-description': 'error',
+      'valid-typeof': [
+        'error',
+        {
+          requireStringLiterals: true,
+        },
+      ],
+      yoda: [
+        'error',
+        'never',
+        {
+          exceptRange: true,
+        },
+      ],
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
     },
