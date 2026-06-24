@@ -36,7 +36,7 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {
-          fixStyle: 'inline-type-imports',
+          fixStyle: 'separate-type-imports',
         },
       ],
       '@typescript-eslint/default-param-last': 'error',
@@ -89,6 +89,7 @@ export default tseslint.config(
           format: null,
         },
       ],
+      '@typescript-eslint/no-import-type-side-effects': 'error',
       '@typescript-eslint/no-loop-func': 'error',
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-unused-private-class-members': 'error',
@@ -104,7 +105,15 @@ export default tseslint.config(
         },
       ],
       '@typescript-eslint/no-use-before-define': 'error',
+      '@typescript-eslint/no-useless-empty-export': 'error',
       '@typescript-eslint/parameter-properties': 'error',
+      '@typescript-eslint/prefer-destructuring': [
+        'error',
+        {
+          VariableDeclarator: { array: false, object: true },
+          AssignmentExpression: { array: false, object: false },
+        },
+      ],
       '@typescript-eslint/prefer-enum-initializers': 'error',
       '@typescript-eslint/prefer-promise-reject-errors': [
         'error',
@@ -120,6 +129,7 @@ export default tseslint.config(
           ignoreStringArrays: true,
         },
       ],
+      '@typescript-eslint/return-await': ['error', 'always'],
       '@typescript-eslint/strict-void-return': [
         'error',
         {
@@ -151,6 +161,7 @@ export default tseslint.config(
       ],
       'grouped-accessor-pairs': 'error',
       'guard-for-in': 'error',
+      'logical-assignment-operators': ['error', 'always'],
       'new-cap': [
         'error',
         {
@@ -159,7 +170,6 @@ export default tseslint.config(
           properties: true,
         },
       ],
-      'no-alert': 'error',
       'no-await-in-loop': 'error',
       'no-caller': 'error',
       'no-cond-assign': ['error', 'always'],
@@ -261,12 +271,30 @@ export default tseslint.config(
           property: '__defineSetter__',
           message: 'Use Object.defineProperty instead',
         },
+        {
+          property: '__lookupGetter__',
+          message: 'Use Object.getOwnPropertyDescriptor instead',
+        },
+        {
+          property: '__lookupSetter__',
+          message: 'Use Object.getOwnPropertyDescriptor instead',
+        },
+      ],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'TSEnumDeclaration[const=true]',
+          message: 'Do not use const enums. Use regular enums or union types instead.',
+        },
+        {
+          selector: 'TSExportAssignment',
+          message: 'Do not use export =. Use ES modules export instead.',
+        },
       ],
       'no-return-assign': ['error', 'always'],
       'no-script-url': 'error',
       'no-self-compare': 'error',
       'no-sequences': 'error',
-      'no-shadow': 'off',
       'no-template-curly-in-string': 'error',
       'no-unassigned-vars': 'error',
       'no-undef-init': 'error',
@@ -289,8 +317,6 @@ export default tseslint.config(
       'no-useless-concat': 'error',
       'no-useless-rename': 'error',
       'no-useless-return': 'error',
-      'no-var': 'error',
-      'no-with': 'error',
       'object-shorthand': ['error', 'always'],
       'one-var': [
         'error',
@@ -316,15 +342,12 @@ export default tseslint.config(
           disallowRedundantWrapping: true,
         },
       ],
-      'prefer-rest-params': 'error',
-      'prefer-spread': 'error',
       'prefer-template': 'error',
       radix: 'error',
       'symbol-description': 'error',
       'use-isnan': [
         'error',
         {
-          enforceForSwitchCase: true,
           enforceForIndexOf: true,
         },
       ],
