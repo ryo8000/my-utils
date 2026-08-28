@@ -23,7 +23,7 @@
   "license": "MIT",
   "description": "A collection of utility functions.",
   "devDependencies": {
-    "eslint": "10.8.1",
+    "eslint": "10.9.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-simple-import-sort": "14.0.0",
     "globals": "17.11.0",
